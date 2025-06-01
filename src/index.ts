@@ -9,7 +9,7 @@ app.use(express.json());
 
 app.use("/api", rootRouter);
 
-export const prismaClient = new PrismaClient();
+export const prismaClient = new PrismaClient({ log: ["query"] });
 
 app.listen(PORT || 7071, () => {
   console.log(`App is running on port ${PORT}`);
