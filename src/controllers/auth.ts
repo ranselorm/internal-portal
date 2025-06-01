@@ -15,9 +15,11 @@ export const signup = async (req: Request, res: Response) => {
     data: {
       email,
       name,
-      password,
+      password: hashSync(password, 10),
     },
   });
+
+  res.json(user);
 };
 
 export const login = (req: Request, res: Response) => {
