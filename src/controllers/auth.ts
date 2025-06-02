@@ -23,6 +23,7 @@ export const signup = async (
         ErrorCode.USER_ALREADY_EXIST
       )
     );
+    return;
   }
 
   user = await prismaClient.user.create({
@@ -53,10 +54,25 @@ export const login = async (
       )
     );
     return;
+    // throw new Error("Wrong email or password");
   }
 
   if (!compareSync(password, user.password)) {
-    throw Error("Password is not correct");
+    next(
+      new BadRequestException(
+        "Wrong email or password",
+        ErrorCode.INCORRECT_PASSWORD_USERNAME
+      )
+    );
+
+    return;
+
+    /*   res.json({
+      message: "Wrong email or password",
+      errorCode: ErrorCode.INCORRECT_PASSWORD_USERNAME,
+      errors: null,
+    });
+    return; */
   }
 
   const token = jwt.sign(
@@ -68,3 +84,10 @@ export const login = async (
 
   res.json({ user, token });
 };
+
+// next(
+//       new BadRequestException(
+//         "Wrong email or password",
+//         ErrorCode.INCORRECT_PASSWORD_USERNAME
+//       )
+//     );
